@@ -9,11 +9,15 @@
     "substance": "1.0.0-preview.20"
   },
   "devDependencies": {
+    "browserify": "^15.2.0",
     "electron": "^1.7.9",
+    "eslint": "^3.17.1",
+    "express": "^4.16.2",
     "font-awesome": "4.5.0",
+    "openurl": "^1.1.1",
     "substance-bundler": "0.20.7",
     "substance-test": "^0.9.4",
-    "eslint": "^3.17.1"
+    "yargs": "^10.1.1"
   },
   "scripts": {
     "prepublish": "node make publish",
