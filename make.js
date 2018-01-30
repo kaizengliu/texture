@@ -90,52 +90,56 @@ b.task('build:app', ['build:browser'], () => {
 })
 
 b.task('build:storage', /*['build:lib'],*/ () => {
-  const CLI = DIST + 'storage/'
-  const LIB = DIST + 'storage/lib/'
-  // creates a bundle for the storage-tool, which can serve a document archive
-  b.copy('storage/index.html', DIST+'storage/')
-  b.copy('dist/texture.js', LIB)
-  b.copy('dist/texture.js.map', LIB)
-  b.copy('node_modules/substance/dist/substance.js', LIB)
-  b.copy('node_modules/substance/dist/substance.js.map', LIB)
+  // const CLI = DIST + 'storage/'
+  // const LIB = DIST + 'storage/lib/'
+  // // creates a bundle for the storage-tool, which can serve a document archive
+  // b.copy('storage/index.html', DIST+'storage/')
+  // b.copy('dist/texture.js', LIB)
+  // b.copy('dist/texture.js.map', LIB)
+  // b.copy('node_modules/substance/dist/substance.js', LIB)
+  // b.copy('node_modules/substance/dist/substance.js.map', LIB)
 
-  b.copy('./node_modules/font-awesome', LIB+'font-awesome')
-  b.copy('./node_modules/substance/dist/*.css', LIB)
-  b.css('texture.css', CLI+'texture.css')
-  b.css('./node_modules/substance/substance-pagestyle.css', CLI+'texture-pagestyle.css')
-  b.css('./node_modules/substance/substance-reset.css', CLI+'texture-reset.css')
+  // b.copy('./node_modules/font-awesome', LIB+'font-awesome')
+  // b.copy('./node_modules/substance/dist/*.css', LIB)
+  // b.css('texture.css', CLI+'texture.css')
+  // b.css('./node_modules/substance/substance-pagestyle.css', CLI+'texture-pagestyle.css')
+  // b.css('./node_modules/substance/substance-reset.css', CLI+'texture-reset.css')
 
-  b.js('storage/client.js', {
-    target: {
-      dest: LIB+'client.js',
-      format: 'umd', moduleName: 'textureClient',
-      globals: {
-        'substance': 'window.substance',
-        'substance-texture': 'window.texture'
-      }
-    },
-    external: ['substance', 'substance-texture']
-  })
-  // bundle vendors so that the cli bundle can be moved around independently
-  b.custom('Bundling vendor...', {
-    src: './storage/vendor.js',
-    dest: LIB+'vendor.js',
-    execute: function() {
-      return bundleVendor({
-        src: './storage/vendor.js',
-        dest: LIB+'vendor.js',
-        // These needs to be ignored, otherwise browserify is choking
-        external: ['cross-spawn'],
-        debug: true
-      })
-    }
-  })
-  b.js('storage/cli.js', {
-    target: {
-      dest: DIST+'storage/cli.js',
-      format: 'cjs'
-    },
-    external: ['fs', 'path']
+  // b.js('storage/client.js', {
+  //   target: {
+  //     dest: LIB+'client.js',
+  //     format: 'umd', moduleName: 'textureClient',
+  //     globals: {
+  //       'substance': 'window.substance',
+  //       'substance-texture': 'window.texture'
+  //     }
+  //   },
+  //   external: ['substance', 'substance-texture']
+  // })
+  // // bundle vendors so that the cli bundle can be moved around independently
+  // b.custom('Bundling vendor...', {
+  //   src: './storage/vendor.js',
+  //   dest: LIB+'vendor.js',
+  //   execute: function() {
+  //     return bundleVendor({
+  //       src: './storage/vendor.js',
+  //       dest: LIB+'vendor.js',
+  //       // These needs to be ignored, otherwise browserify is choking
+  //       external: ['cross-spawn'],
+  //       debug: true
+  //     })
+  //   }
+  // })
+  // b.js('storage/cli.js', {
+  //   target: {
+  //     dest: DIST+'storage/cli.js',
+  //     format: 'cjs'
+  //   },
+  //   external: ['fs', 'path']
+  // })
+  b.browserify('storage/fs.js', {
+    dest: 'foo.js',
+    moduleName: 'browserFs'
   })
 })
 

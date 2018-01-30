@@ -8,61 +8,38 @@ export default class SimpleStorageClient {
   }
 
   /*
-    @returns the archive with raw data and asset URLs
-      {
-        manifest: '...' // xml string
-        doc1: '' // xml string
-        entities: '' // json string
-        img1: '' // URL
-        img2: '' // URL
-      }
+    The HTTP endpoint returns a hash of file records each having
+      - 'id': unique identifier
+      - 'type': resource type
+      - 'mime-type' (optional)
+      - 'path': local path as in a file-system
+      - 'url': to retrieve the raw data
+      - 'data' (optional)
+
+    Binary files are typically provided as data, but just via URL.
+
+    @returns the (raw) archive as a hash
   */
   load() {
     let result = {}
     let list
     // retrieve a list of resources contained by the archive
     return sendRequest({
-      url: this.apiUrl + '/list'
+      url: this.apiUrl + '/load'
     })
     .then((res) => {
-      list = JSON.parse(res)
-    })
-    .then(() => {
-      let documents = []
-      list.forEach((entry) => {
-        if (entry.type === 'binary') {
-          result[entry.id] = entry
-        } else {
-          documents.push(entry)
-        }
-      })
-      // load all non-binary resources
-      return Promise.all(documents.map((entry) => {
-        return sendRequest({
-          url: entry.url
-        }).then((data) => {
-          result[entry.id] = {
-            type: entry.type,
-            data: data
-          }
-        })
-      })).then(() => {
-        return result
-      })
+      // TODO: should we do some integrity checking here?
+      // potentially, this could be the place to run automatic-ingestion
+      return JSON.parse(res)
     })
   }
 
-  /*
-    @param archive a hash with updated resources as raw strings and blobs
-      {
-        manifest: '...' // xml string
-        doc1: '' // xml string
-        entities: '' // json string
-        img1: ... // Blob
-        img2: ... // URL
-      }
-  */
-  // update(content) {
-
-  // }
+  save(rawArchive) {
+    // TODO: should we transform the raw archive here?
+    // retrieve a list of resources contained by the archive
+    return sendRequest({
+      url: this.apiUrl + '/save',
+      data: rawArchive
+    })
+  }
 }

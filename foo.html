@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FS experiment</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="./foo.js"></script>
+    <script type="text/javascript">
+      // function requestQuota() {
+      //   var requestedBytes = 1024*1024*100; // 100MB
+      //   return new Promise((resolve, reject) => {
+      //     navigator.webkitPersistentStorage.requestQuota(requestedBytes, (grantedBytes) => {
+      //       resolve()
+      //     }, (err) => {
+      //       reject(err)
+      //     })
+      //   })
+      //   // .then(() => {
+      //   //   window.webkitRequestFileSystem(PERSISTENT, grantedBytes, () => {
+      //   //     resolve()
+      //   //   }, (err) => {
+      //   //     reject(err)
+      //   //   })
+      //   // })
+      // }
+
+
+
+      window.onload = function() {
+        if (navigator.storage && navigator.storage.persist) {
+          navigator.storage.persist()
+          .then(granted => {
+            if (granted) {
+              alert("Storage will not be cleared except by explicit user action");
+            } else {
+              alert("Storage may be cleared by the UA under storage pressure.");
+            }
+          })
+        }
+
+        // let { open } = window.browserFs
+
+        // requestQuota().then(() => {
+        //   // TODO: when level.js has been fixed to be compatible with new leveldown API
+        //   // this changes to `levelfs(levelup(leveljs('foo')))`
+        //   let fs = open('foo')
+        //   fs.exists('foo.txt', (err, exists) => {
+        //     if (err) console.error(err)
+        //     else if (exists) {
+        //       fs.readFile('foo.txt', 'utf8', (err, content) => {
+        //         if (err) console.error(err)
+        //         else console.log(content)
+        //       })
+        //     } else {
+        //       fs.writeFile('foo.txt', 'Hello World!', 'utf8', (err) => {
+        //         console.log('Created foo.txt')
+        //       })
+        //     }
+        //   })
+        // }).catch((err) => {
+        //   console.error(err)
+        // })
+      }
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
